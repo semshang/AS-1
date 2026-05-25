@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+
+  php:
+    build: .
+    volumes:
+      - ./public:/public
+    working_dir: /public
+    command: php -S 0.0.0.0:8000
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mariadb:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: assignment1
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysqldata:/var/lib/mysql
+
+  adminer:
+    image: adminer:latest
+    ports:
+      - "8080:8080"
+
+volumes:
+  mysqldata:
